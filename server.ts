@@ -47,7 +47,7 @@ function generateMockLogs() {
     "updated",
   ];
 
-  for (let i = 0; i < 2000; i++) {
+  for (let i = 0; i < 200; i++) {
     const type = types[Math.floor(Math.random() * types.length)];
     const id = Math.floor(Math.random() * 900000) + 100000;
     const action = actions[Math.floor(Math.random() * actions.length)];
