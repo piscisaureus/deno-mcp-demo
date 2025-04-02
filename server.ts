@@ -14,7 +14,7 @@ async function handleRequest(req: Request): Promise<Response> {
     });
   }
 
-  const resourceMatch = url.pathname.match(/^\/(vm|bucket)\/(\d+)$/);
+  const resourceMatch = url.pathname.match(/^\/(vm|bucket)\/(.*)$/);
   if (resourceMatch) {
     const id = resourceMatch[2];
     if (isValidId(id)) {
