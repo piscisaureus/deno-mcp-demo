@@ -1,3 +1,9 @@
+type ResourceType = 'vm' | 'bucket';
+
+interface ResourceStatus {
+  status: 'ok' | 'notfound' | string;
+}
+
 export class CloudSDK {
   private baseUrl: string;
 
@@ -20,7 +26,7 @@ export class CloudSDK {
 
   /**
    * Fetch logs from the server and discover all resources mentioned in them
-   * @returns Promise<Resource[]> Array of resources with their status
+   * @returns Promise<string[]> Array of resources with their status
    */
   async discoverResources(): Promise<string[]> {
     // Fetch logs
@@ -42,7 +48,7 @@ export class CloudSDK {
     const processedKeys = new Set<string>();
 
     for (const match of resourceMatches) {
-      const [, type, id] = match;
+      const [, type, id] = match as unknown as [string, ResourceType, string];
       const key = `${type}:${id}`;
 
       // Avoid duplicates
@@ -53,7 +59,7 @@ export class CloudSDK {
 
       // Fetch the status of the resource
       const resourceResponse = await fetch(`${this.baseUrl}/${type}/${id}`);
-      const json = await resourceResponse.json();
+      const json: ResourceStatus = await resourceResponse.json();
       switch (json.status) {
         case "ok":
           resources.push(`${type}:${id} is healthy`);
